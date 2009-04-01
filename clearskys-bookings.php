@@ -23,7 +23,9 @@ Author URI: http://blog.clearskys.net, http://anmari.com
     Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 */
 
-define('WPCPLUGINPATH', (DIRECTORY_SEPARATOR != '/') ? str_replace(DIRECTORY_SEPARATOR, '/', dirname(__FILE__)) : dirname(__FILE__));
+// amr define('WPCPLUGINPATH', (DIRECTORY_SEPARATOR != '/') ? str_replace(DIRECTORY_SEPARATOR, '/', dirname(__FILE__)) : dirname(__FILE__));
+define('WPCPLUGINURL',  WP_PLUGIN_URL.'/amr-clearskys-bookings') ;
+define('WPCPLUGINDIR',  dirname(__FILE__)) ;
 
 include_once('includes/csbooking.php');
 include_once('amr_props.php');  /* the definition of the properties */
@@ -35,7 +37,8 @@ class CSbook
 	function CSbook() 
 	{ 
 		// Add the installation and uninstallation hooks 
-		$file = WPCPLUGINPATH . '/' . basename(__FILE__); 
+//amr		$file = WPCPLUGINPATH . '/' . basename(__FILE__); 
+		$file = __FILE__; 
 		register_activation_hook($file, array(&$this, 'install')); 
 		register_deactivation_hook($file, array(&$this, 'uninstall'));  
 		// Administration menu
@@ -162,18 +165,19 @@ function cs_bookings_menu() { /* amr*/
 	
 	function add_admin_header() {
 		
-		$site_uri = get_option('home'); /* needs fixing - amr */
-		$plugin_uri = WP_PLUGIN_URL.'/amr-clearskys-bookings/includes/';  /* amr */
+//amr		$site_uri = get_option('home'); /* needs fixing - amr */
+//amr		$plugin_uri = WP_PLUGIN_URL.'/amr-clearskys-bookings/includes/';  /* amr */
+		
 //amr		$plugin_uri = 'http://localhost/wptest/wp-content/plugins/clearskys/includes/';
 		
 		if(stristr($_GET["page"], 'bookings' ))  {
-			echo '<script type="text/javascript" src="' . $plugin_uri . 'js/yahoo-dom-event.js" ></script>';
-			echo '<script type="text/javascript" src="' . $plugin_uri . 'js/connection.js" ></script>';
-			echo '<script type="text/javascript" src="' . $plugin_uri . 'js/animation.js" ></script>';
-			echo '<script type="text/javascript" src="' . $plugin_uri . 'js/container.js" ></script>';
-			echo '<script type="text/javascript" src="' . $plugin_uri . 'js/bookingsearch.js" ></script>';
-			echo '<link rel="stylesheet" type="text/css" href="' . $plugin_uri . 'css/container.css" />';
-			echo '<link rel="stylesheet" type="text/css" href="' . $plugin_uri . 'css/bookingsearch.css" />';
+			echo '<script type="text/javascript" src="' .WPCPLUGINURL . '/includes/js/yahoo-dom-event.js" ></script>';
+			echo '<script type="text/javascript" src="' .WPCPLUGINURL . '/includes/js/connection.js" ></script>';
+			echo '<script type="text/javascript" src="' .WPCPLUGINURL . '/includes/js/animation.js" ></script>';
+			echo '<script type="text/javascript" src="' .WPCPLUGINURL . '/includes/js/container.js" ></script>';
+			echo '<script type="text/javascript" src="' .WPCPLUGINURL . '/includes/js/bookingsearch.js" ></script>';
+			echo '<link rel="stylesheet" type="text/css" href="' . WPCPLUGINURL . '/includes/css/container.css" />';
+			echo '<link rel="stylesheet" type="text/css" href="' . WPCPLUGINURL . '/includes/css/bookingsearch.css" />';
 		}
 		
 /* amr */
@@ -207,9 +211,9 @@ function cs_bookings_menu() { /* amr*/
 			$cs["clearskys_calendar_weekheader"] = "<thead><tr><th scope='col'>S</th><th scope='col'>M</th><th scope='col'>T</th><th scope='col'>W</th><th scope='col'>T</th><th scope='col'>F</th><th scope='col'>S</th></tr></thead>";
 			$cs["clearskys_calendar_datesblock"] = "<tbody>{month}</tbody>";
 			$cs["clearskys_calendar_weekrow"] = "<tr>{week}</tr>";
-			$cs["clearskys_calendar_bookeddate"] = "<td class='booked'>{day}</td>";
-			$cs["clearskys_calendar_bookedstartdate"] = "<td class='booked startday'>{day}</td>";
-			$cs["clearskys_calendar_bookedenddate"] = "<td class='booked endday'>{day}</td>";
+			$cs["clearskys_calendar_bookeddate"] = "<td class='booked'><strong>{day}</strong></td>";
+			$cs["clearskys_calendar_bookedstartdate"] = "<td class='booked startday'><strong>{day}</strong></td>";
+			$cs["clearskys_calendar_bookedenddate"] = "<td class='booked endday'><strong>{day}</strong></td>";
 			$cs["clearskys_calendar_availabledate"] = "<td>{day}</td>";
 			$cs["clearskys_calendar_afterevery_number"] = "0";
 			$cs["clearskys_calendar_afterevery"] = "";
@@ -363,7 +367,9 @@ function cs_bookings_menu() { /* amr*/
 					echo "/" . $cs["clearskys_propertyno"] . "?feed=ical";
 				}
 				echo "' title='Subscribe to iCal feed'>";
-				echo "<img src='" .  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/date22x22.png' alt='iCal feed' width='22' height='22' style='vertical-align: bottom;' />";
+				echo "<img src='" 
+								. WPCPLUGINURL ."/includes/images/date22x22.png' alt='iCal feed' width='22' height='22' style='vertical-align: bottom;' />";
+//amr				.  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/date22x22.png' alt='iCal feed' width='22' height='22' style='vertical-align: bottom;' />";
 				echo "</a>&nbsp;<a href='" .  get_settings('siteurl') . $cs["clearskys_publicpath"];
 				if($this->isquerystring($cs["clearskys_publicpath"])) {
 					echo "&property=" . $cs["clearskys_propertyno"] . "&feed=RSS";
@@ -371,7 +377,9 @@ function cs_bookings_menu() { /* amr*/
 					echo "/" . $cs["clearskys_propertyno"] . "?feed=RSS";
 				}
 				echo "' title='Subscribe to RSS feed'>";
-				echo "<img src='" .  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/feed-icon16x16.png' alt='RSS feed' width='16' height='16' style='vertical-align: text-top;' />";
+				echo "<img src='" 
+				.WPCPLUGINURL .  "/includes/images/feed-icon16x16.png' alt='RSS feed' width='16' height='16' style='vertical-align: text-top;' />";
+//amr				.  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/feed-icon16x16.png' alt='RSS feed' width='16' height='16' style='vertical-align: text-top;' />";
 				echo "</a>";
 			}
 			?>
@@ -389,7 +397,7 @@ function cs_bookings_menu() { /* amr*/
 					echo "/" . $cs["clearskys_propertyno"] . "?feed=ical";
 				}
 				echo "' title='Subscribe to iCal feed'>";
-				echo "<img src='" .  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/date22x22.png' alt='iCal feed' width='22' height='22' style='vertical-align: bottom;' />";
+				echo "<img src='" .   WPCPLUGINURL ."/includes/images/date22x22.png' alt='iCal feed' width='22' height='22' style='vertical-align: bottom;' />";
 				echo "</a>&nbsp;<a href='" .  get_settings('siteurl') . $cs["clearskys_privatepath"];
 				if($this->isquerystring($cs["clearskys_privatepath"])) {
 					echo "&property=" . $cs["clearskys_propertyno"] . "&feed=RSS";
@@ -397,7 +405,7 @@ function cs_bookings_menu() { /* amr*/
 					echo "/" . $cs["clearskys_propertyno"] . "?feed=RSS";
 				}
 				echo "' title='Subscribe to RSS feed'>";
-				echo "<img src='" .  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/feed-icon16x16.png' alt='RSS feed' width='16' height='16' style='vertical-align: text-top;' />";
+				echo "<img src='" .  WPCPLUGINURL . "/includes/images/feed-icon16x16.png' alt='RSS feed' width='16' height='16' style='vertical-align: text-top;' />";
 				echo "</a>";
 			}
 			?>
@@ -511,7 +519,7 @@ function cs_bookings_menu() { /* amr*/
   		$tblbooking = $wpdb->prefix . "cs_booking";
   		$booking = new CSbooking($wpdb,$tblbooking);
   		$site_uri = get_settings('siteurl');
-  		$plugin_uri = WP_PLUGIN_URL.'/amr-clearskys-bookings/includes/'; /* amr */
+  		$plugin_uri =  WPCPLUGINURL .'/includes/'; /* amr */
   		setlocale(LC_ALL,$cs["clearskys_adminlocale"]);
   		
 		if($_REQUEST['action'] == "") {
@@ -572,7 +580,7 @@ function cs_bookings_menu() { /* amr*/
 				if($stext != "") echo "&s=" . $stext;
 				if($stype != "") echo "&type=" . $stype;
 				echo "' title='Subscribe to iCal feed'>";
-				echo "<img src='" .  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/date16x16.png' alt='iCal feed' style='vertical-align: text-top;' />";
+/* amr*/				echo "<img src='" .  WPCPLUGINURL  ."/includes/images/date16x16.png' alt='iCal feed' style='vertical-align: text-top;' />";
 				echo "</a>";
 			}
 			?>
@@ -638,7 +646,7 @@ function cs_bookings_menu() { /* amr*/
 				. $row['id'] . $backlist . "&amp;action=edit' title='Click to edit this booking'>";
  				echo "edit</a>";
  				echo " | ";
- 				echo "<a class='deletelink' id='deletebooking-" . $row['id'] . "' href='admin.php?admin.php?page=amr-clearskys-bookings/clearsky-bookings.php&amp;bookingid=" 
+ 				echo "<a class='deletelink' id='deletebooking-" . $row['id'] . "' href='admin.php?admin.php?page=amr-clearskys-bookings/clearskys-bookings.php&amp;bookingid=" 
 				. $row['id'] . "&amp;action=delete'' title='Click to delete this booking'>";
  				echo "delete</a>";
  				echo "</span>";
@@ -664,7 +672,7 @@ function cs_bookings_menu() { /* amr*/
   		$tblbooking = $wpdb->prefix . "cs_booking";
   		$booking = new CSbooking($wpdb,$tblbooking);
   		$site_uri = get_settings('siteurl'); /* amr */
-  		$plugin_uri = WP_PLUGIN_URL. '/amr-clearskys-bookings/includes/';
+  		$plugin_uri =  WPCPLUGINURL .'/includes/';
   		setlocale(LC_ALL,$cs["clearskys_adminlocale"]);
   		
 		if($msg != "") {
@@ -957,7 +965,7 @@ function cs_bookings_menu() { /* amr*/
   		}
 		//print_r($row);
   		?>
-		<script type="text/javascript" src="<?php echo $siteurl; ?>/wp-content/plugins/clearskys/includes/js/booking.js"></script>
+		<script type="text/javascript" src="<?php echo WPCPLUGINURL ; ?>/includes/js/booking.js"></script>
 		<div class="wrap">
 			    <h2><a name="addnew"></a>Add New Booking</h2>
 			    <?php
@@ -1226,7 +1234,7 @@ function cs_bookings_menu() { /* amr*/
   		}
 		
   		?>
-		<script type="text/javascript" src="<?php echo $siteurl; ?>/wp-content/plugins/clearskys/includes/js/booking.js"></script>
+		<script type="text/javascript" src="<?php echo  WPCPLUGINURL ; ?>/includes/js/booking.js"></script>
 		<div class="wrap">
 		    <h2><a name="addnew"></a>Edit Booking</h2>
 		    <?php
@@ -1626,6 +1634,7 @@ function cs_bookings_menu() { /* amr*/
 					case "feedlink":
 //amr						$format = preg_replace("[\(|\)]","",$matches[2][$n]);
 						$format = $number;
+
 						if(strtolower($format) == 'rss' || strtolower($format) == 'ical') {
 							$link = "<a href='" .  get_settings('siteurl')  . $cs["clearskys_publicpath"];
 							if($propertyid) {
@@ -1633,24 +1642,27 @@ function cs_bookings_menu() { /* amr*/
 							} else {
 								$useprop = $cs["clearskys_propertyno"];
 							}
-							if($this->isquerystring($cs["clearskys_publicpath"])) {
+//							if($this->isquerystring($cs["clearskys_publicpath"])) {
 								$link .= "&property=" . $useprop . "&feed=" . strtolower($format);
-							} else {
-								$link .=  "/" . $useprop . "?feed=" . strtolower($format);
-							}
+//							} else {
+//								$link .=  "/" . $useprop . "?feed=" . strtolower($format);
+//							}
 							if(strtolower($format) == 'rss') {
 								$link .= "' title='Subscribe to RSS feed'>";
-								$link .= "<img src='" .  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/feed-icon16x16.png' alt='RSS feed' width='16' height='16' style='vertical-align: text-top;' />";
+								$link .= "<img src='" .  WPCPLUGINURL . "/includes/images/feed-icon16x16.png' alt='RSS feed' width='16' height='16' style='vertical-align: text-top; border-width:0;' />";
 							} else {
 								$link .= "' title='Subscribe to iCal feed'>";
-								$link .= "<img src='" .  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/date22x22.png' alt='iCal feed' width='22' height='22' style='vertical-align: bottom;' />";
+								$link .= "<img src='" .  WPCPLUGINURL . "/includes/images/date22x22.png' alt='iCal feed' width='22' height='22' style='vertical-align: bottom;' />";
 							}
 							$link .= "</a>";
-							$content .= $link;
+
+							$content = $link;
+
 						}
 						break;
 					case "feedjscriptlink":
-						$format = preg_replace("[\(|\)]","",$matches[2][$n]);
+//amr						$format = preg_replace("[\(|\)]","",$matches[2][$n]);
+						$format=$number;
 						if(strtolower($format) == 'rss' || strtolower($format) == 'ical') {
 							$link = "<a href='";
 							$useurl =  get_settings('siteurl')  . $cs["clearskys_publicpath"];
@@ -1669,12 +1681,12 @@ function cs_bookings_menu() { /* amr*/
 								$link .= "' title='Subscribe to RSS feed'";
 								$link .= " onclick='prompt(\"To subscribe to this feed, cut and paste the URL below into your Feed Reader when asked for subscribe details\",\"$useurl\"); return false;'";
 								$link .= ">";
-								$link .= "<img src='" .  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/feed-icon16x16.png' alt='RSS feed' width='16' height='16' style='vertical-align: text-top;' />";
+/* amr*/								$link .= "<img src='" .   WPCPLUGINURL ."/includes/images/feed-icon16x16.png' alt='RSS feed' width='16' height='16' style='vertical-align: text-top;' />";
 							} else {
 								$link .= "' title='Subscribe to iCal feed'";
 								$link .= " onclick='prompt(\"To subscribe to this feed, cut and paste the URL below into your Calendar application when asked for subscribe details\",\"$useurl\"); return false;'";
 								$link .= ">";
-								$link .= "<img src='" .  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/date22x22.png' alt='iCal feed' width='22' height='22' style='vertical-align: bottom;' />";
+								$link .= "<img src='" .   WPCPLUGINURL ."/includes/images/date22x22.png' alt='iCal feed' width='22' height='22' style='vertical-align: bottom;' />";
 							}
 							$link .= "</a>";
 //amr							$content = str_replace('<' . $matches[0][$n] . '>',$link,$content);
@@ -1682,7 +1694,9 @@ function cs_bookings_menu() { /* amr*/
 						}
 						break;
 					case "feedurl":
-						$format = preg_replace("[\(|\)]","",$matches[2][$n]);
+//						$format = preg_replace("[\(|\)]","",$matches[2][$n]);
+						$format = $number;
+
 						if(strtolower($format) == 'rss' || strtolower($format) == 'ical') {
 							$useurl =  get_settings('siteurl')  . $cs["clearskys_publicpath"];
 							if($propertyid) {
@@ -1690,11 +1704,11 @@ function cs_bookings_menu() { /* amr*/
 							} else {
 								$useprop = $cs["clearskys_propertyno"];
 							}
-							if($this->isquerystring($cs["clearskys_publicpath"])) {
+//							if($this->isquerystring($cs["clearskys_publicpath"])) {
 								$useurl .= "&property=" . $useprop . "&feed=" . strtolower($format);
-							} else {
-								$useurl .=  "/" . $useprop . "?feed=" . strtolower($format);
-							}
+//							} else {
+//								$useurl .=  "/" . $useprop . "?feed=" . strtolower($format);
+//							}
 							$link = $useurl;
 //amr							$content = str_replace('<' . $matches[0][$n] . '>',$link,$content);
 							$content .= $link;

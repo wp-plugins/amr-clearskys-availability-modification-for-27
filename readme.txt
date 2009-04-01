@@ -4,8 +4,8 @@ Donate link: http://webdesign.anmari.com/web-tools/donate/
 Tags: calendar, property, properties, availability, widget
 Requires at least: 2.6
 Tested up to: 2.7.1
-Version: 1.1a
-Stable tag: 1.1a
+Version: 1.1b
+Stable tag: 1.1b
 
 Clearskys Property Availability calendar modified for 2.7.1 with wordpress in own directory, shortcodes, multiple properties (rudimentary).
 
@@ -15,6 +15,11 @@ Please see [Clearskys](http://dev.clearskys.net/Wordpress/Availability)  for all
 
 
 == Version History ==
+
+= Version 1.1a =
+*   fixed the clearsksy file and directory references so css has no problems
+*   added strong to default css in config for booked class so will at least highlight if no css.
+*   tried to fix their feeds but it is not picking them up - if anyone wants to have a go st seeing why or is happy for to pay me - I'll look furthe.  Also happy to add a form for adding properties if someone wants to contribute to that exercise.   mean while addd properties by updating the amr_props.php file - just add another line.
 
 = Version 1.1a =
 *   fixed to allow for wordpress in own directory, and relocated content directory
