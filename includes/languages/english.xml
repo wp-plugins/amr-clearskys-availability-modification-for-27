@@ -1,0 +1,48 @@
+<!--
+File: clearskys.net language file
+Language: UK English
+Author: Barry at clearskys.net
+URL: http://blog.clearskys.net
+-->
+<definitions>
+   <definition>
+       <name>CS_SYSTEMNAME</name>
+       <value>Clearskys.net</value>
+   </definition>
+   <definition>
+       <name>CS_BOOKINGSMANAGEMENT</name>
+       <value>Bookings Management</value>
+   </definition>
+   <definition>
+       <name>CS_ADDNEW</name>
+       <value>add new</value>
+   </definition>
+   <definition>
+       <name>CS_SEARCHBOOKINGS</name>
+       <value>Search Bookings...</value>
+   </definition>
+   <definition>
+       <name>CS_SHOWBOOKINGSSTARTING</name>
+       <value>Show Bookings starting…</value>
+   </definition>
+   <definition>
+       <name>CS_SHOWWITHSTATUS</name>
+       <value>Show with status…</value>
+   </definition>
+   <definition>
+       <name>CS_SEARCHBUTTON</name>
+       <value>Search</value>
+   </definition>
+   <definition>
+       <name>CS_SHOWBOOKINGSBUTTON</name>
+       <value>Show Bookings</value>
+   </definition>
+   <definition>
+       <name>CS_ADDNEWBOOKING</name>
+       <value>Add New Booking</value>
+   </definition>
+   <definition>
+       <name>CS_BOOKINGDETAILS</name>
+       <value>Booking Details</value>
+   </definition>
+</definitions>

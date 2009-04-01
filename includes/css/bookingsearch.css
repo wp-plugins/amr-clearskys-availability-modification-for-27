@@ -1,0 +1,156 @@
+/* @override http://localhost:8888/phounds/wp-content/plugins/clearskys/includes/css/bookingsearch.css */
+
+/* Property management page */
+
+/* @group Bookingform */
+
+#notes {
+	height: 300px;
+	
+}
+#editbooking table, #addbooking table {
+	background-color: #feffc8;
+	
+}
+#editbooking table th, #addbooking table th {
+	line-height: 1.5; 
+	background: url( ../images/fade-butt.png ) -5px 0px; 
+	border: 1px solid #CCCCCC !important; 
+	padding: 3px; 
+	font-weight: bold;
+	
+}
+#editbooking table td, #addbooking table td {
+	padding: 5px 10px;
+	
+}
+/* @end */
+
+/* @group Searchform */
+
+#bookingsidepanel table { border: 1px solid #CCCCCC !important; }
+#bookingsidepanel table thead th { line-height: 1.5; background: url( ../images/fade-butt.png ) -5px 0px; border-top: none !important; border-left: none !important; border-right: none !important; border-bottom: 1px solid #FFFFFF !important; padding: 3px; font-weight: bold;}
+#bookingsidepanel table tbody td { background: #F3F3F3; border-top: 1px solid #FFFFFF !important; border-left: none !important; border-right: none !important; border-bottom: none !important; padding: 3px;}
+searchpanel {  }
+.searchheading {float: left; margin-left: 5px; vertical-align: middle; font-weight: bold;}
+.searchcontent {float: left; margin-left: 5px; vertical-align: middle; font-weight: normal; }
+#busysearch {float: right; visibility: hidden; margin-right: 10px;}
+.busyenquiry {float: right; visibility: hidden; margin-right: 10px; margin-top: 2px;}
+#bookingsearchform label { display: block; background-color: #F3F3F3 !important; }
+#bookingsearchform select { display: block; margin-bottom: 10px;}
+#bookingsearchform input#search { display: block; margin-bottom: 10px;}
+#bookingresultpanel {float: left; border: none; width: 65%; }
+
+.resultsheader {line-height: 1.5; background: url( ../images/fade-butt.png ) -5px 0px; border: 1px solid #CCCCCC !important; padding: 3px; font-weight: bold; margin-bottom: 10px;}
+.feedlink, .feedlink:visited {border: 0; float: right; vertical-align: middle;
+	margin-right: 5px;
+	margin-left: 5px;
+}
+.bookingrow {
+	padding: 5px;
+	margin-bottom: 10px;
+	border: 1px solid #fff;
+}
+.bookingrow:hover {
+	border: 1px solid #999;
+}
+.alternate {
+	background-color: #fdff90;
+}
+.bookingrow .title {
+	font-weight: bold;
+	display: block;
+}
+.bookingrow .property {
+	font-weight: bold;
+	display: block;
+}
+.bookingrow .menu {
+	font-weight: normal;
+	display: block;
+	margin-top: 10px;
+	float: right;
+	margin-right: 10px;
+}
+.bookingrow .rentor {
+	font-weight: bold;
+	display: block;
+}
+.calendarstart {
+	border: 1px solid #333;
+	float: left;
+	margin-right: 5px;
+	width: 80px;
+	padding: 2px;
+	background-color: #fff;
+}
+.calendarend {
+	border: 1px solid #333;
+	float: right;
+	margin-right: 5px;
+	width: 80px;
+	padding: 2px;
+	background-color: #fff;
+}
+.calendarstart .month {
+	clear: both;
+	display: block;
+	text-align: center;
+	font-weight: bold;
+	background-color: #009ad0;
+	color: #fff;
+	font-size: 1.2em;
+}
+.calendarend .month {
+	clear: both;
+	display: block;
+	text-align: center;
+	font-weight: bold;
+	background-color: #ff1727;
+	color: #fff;
+	font-size: 1.2em;
+}
+.calendarstart .day {
+	clear: both;
+	display: block;
+	text-align: center;
+	font-weight: bold;
+	color: #000;
+	font-size: 2.5em;
+}
+.calendarstart .day abbr {
+	border: 0;
+}
+.calendarend .day {
+	clear: both;
+	display: block;
+	text-align: center;
+	font-weight: bold;
+	color: #000;
+	font-size: 2.5em;
+}
+.calendarend .day abbr {
+	border: 0;
+}
+.calendarstart .year {
+	clear: both;
+	display: block;
+	text-align: center;
+	background-color: #009ad0;
+	font-weight: bold;
+	color: #fff;
+	font-size: 1.2em;
+}
+.calendarend .year {
+	clear: both;
+	display: block;
+	text-align: center;
+	background-color: #ff1727;
+	font-weight: bold;
+	color: #fff;
+	font-size: 1.2em;
+}
+
+#bookingsidepanel {float: right; border: none; width: 30%;}
+
+/* @end */

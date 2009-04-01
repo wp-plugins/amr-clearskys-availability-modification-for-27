@@ -1,0 +1,40 @@
+div.calendar {
+	height: 240px;
+	 float:left;
+}
+div.calendar table
+ {
+ float:left;
+ padding:5px;
+ background-color:#F7F9FB;
+ border:1px solid #7B9EBD;
+ margin: 10px;
+ font:100% sans-serif;
+ text-align:center;
+ border-spacing:0;
+ border-collapse:separate;
+ }
+
+div.calendar table caption {
+ border:1px solid #E0E0E0;
+ vertical-align:middle;
+ background-color:#FFF;
+ position:relative;
+ text-align:center;
+ }
+
+div.calendar table tbody td
+ {
+ padding:.1em .2em;
+ border:1px solid #E0E0E0;
+ background-color:#FFF;
+ }
+
+div.calendar table thead th
+ {
+font-weight: bold;
+ }
+div.calendar table tbody td.booked
+ {
+ background-color:#F66;
+ }
