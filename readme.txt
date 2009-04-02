@@ -19,7 +19,9 @@ Please see [Clearskys](http://dev.clearskys.net/Wordpress/Availability)  for all
 = Version 1.1a =
 *   fixed the clearsksy file and directory references so css has no problems
 *   added strong to default css in config for booked class so will at least highlight if no css.
-*   tried to fix their feeds but it is not picking them up - if anyone wants to have a go st seeing why or is happy for to pay me - I'll look furthe.  Also happy to add a form for adding properties if someone wants to contribute to that exercise.   mean while addd properties by updating the amr_props.php file - just add another line.
+*   tried to fix their feeds but it is not picking them up - if anyone wants to have a go at seeing why or is happy for to pay me - I'll look further.  One can add a shortcode [amr-clearskys-bookings property=1 months=2 feedlink="ical" ]  , but the resultant link does not work.  Or
+[amr-clearskys-bookings property=1 months=2 feedlink="rss" ]  
+Also happy to add a form for adding properties if someone wants to contribute to that exercise.   Meanwhile addd properties by updating the amr_props.php file - just add another line.
 
 = Version 1.1a =
 *   fixed to allow for wordpress in own directory, and relocated content directory

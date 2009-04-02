@@ -566,7 +566,7 @@ function cs_bookings_menu() { /* amr*/
 
 				echo '<img src="' .  
 				//get_settings('siteurl')  . "/wp-content/plugins" amr
-				WP_PLUGIN_URL .
+				WPCPLUGINURL.
 				'/includes/images/feed-icon16x16.png" alt="RSS feed" width="16" height="16" style="vertical-align: text-top;" />';
 				echo "</a>";
 				echo "<a class='feedlink' href='" .  get_settings('home')  . $cs["clearskys_privatepath"]; /* amr */
