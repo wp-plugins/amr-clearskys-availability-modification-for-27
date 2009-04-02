@@ -405,7 +405,8 @@ border:none;
 					$ilink .= $useurl . "ical\"); return false;'";
 				}
 				$ilink .= ">";
-				$ilink .= "<img src='" .  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/date22x22.png' alt='iCal feed' width='22' height='22' style='vertical-align: bottom;' />";
+//amr				$ilink .= "<img src='" .  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/date22x22.png' alt='iCal feed' width='22' height='22' style='vertical-align: bottom;' />";
+			$ilink .= "<img src='" . WPCPLUGINURL ."/includes/images/date22x22.png' alt='iCal feed' width='22' height='22' style='vertical-align: bottom;' />";
 				echo $link . "ical" . $ilink;
 				echo "</a>";
 			}
@@ -416,7 +417,8 @@ border:none;
 					$ilink .= $useurl . "rss\"); return false;'";
 				}
 				$ilink .= ">";
-				$ilink .= "<img src='" .  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/feed-icon16x16.png' alt='RSS feed' width='16' height='16' style='vertical-align: text-top;' />";
+//amr				$ilink .= "<img src='" .  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/feed-icon16x16.png' alt='RSS feed' width='16' height='16' style='vertical-align: text-top;' />";
+	            $ilink .= "<img src='" .  WPCPLUGINURL ."/includes/images/feed-icon16x16.png' alt='RSS feed' width='16' height='16' style='vertical-align: text-top;' />";
 				echo $link . "rss" . $ilink;
 				echo "</a>";
 			}

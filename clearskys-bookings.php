@@ -24,11 +24,16 @@ Author URI: http://blog.clearskys.net, http://anmari.com
 */
 
 // amr define('WPCPLUGINPATH', (DIRECTORY_SEPARATOR != '/') ? str_replace(DIRECTORY_SEPARATOR, '/', dirname(__FILE__)) : dirname(__FILE__));
-define('WPCPLUGINURL',  WP_PLUGIN_URL.'/amr-clearskys-bookings') ;
+
+$endpos1 = strripos(dirname(__FILE__), '/');
+$endpos2 = strripos(dirname(__FILE__), '\\');
+if ($endpos1 < $endpos2) {$endpos1 = $endpos2;}
+define('WPCPLUGINURL',  WP_PLUGIN_URL .'/' .substr(dirname(__FILE__), $endpos1+1 )) ;
 define('WPCPLUGINDIR',  dirname(__FILE__)) ;
 
 include_once('includes/csbooking.php');
-include_once('amr_props.php');  /* the definition of the properties */
+if (file_exists('amr_props.php') )include('amr_props.php');  /* the definition of the properties */
+else  $amr_props[1] = "Property 1";
 
 class CSbook
 {

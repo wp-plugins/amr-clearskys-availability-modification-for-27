@@ -4,8 +4,8 @@ Donate link: http://webdesign.anmari.com/web-tools/donate/
 Tags: calendar, property, properties, availability, widget
 Requires at least: 2.6
 Tested up to: 2.7.1
-Version: 1.1b
-Stable tag: 1.1b
+Version: 1.1c
+Stable tag: 1.1c
 
 Clearskys Property Availability calendar modified for 2.7.1 with wordpress in own directory, shortcodes, multiple properties (rudimentary).
 
@@ -16,7 +16,13 @@ Please see [Clearskys](http://dev.clearskys.net/Wordpress/Availability)  for all
 
 == Version History ==
 
-= Version 1.1a =
+
+= Version 1.1c =
+*   more fix to folder url
+*   also changed the property file to be a sample, and chcek for existence so as not to over right on upgrade!  So if it is a new install, you need to copy the amr_props_sample.php to amr_props.php, or else you will only have 1 property!
+
+
+= Version 1.1b =
 *   fixed the clearsksy file and directory references so css has no problems
 *   added strong to default css in config for booked class so will at least highlight if no css.
 *   tried to fix their feeds but it is not picking them up - if anyone wants to have a go at seeing why or is happy for to pay me - I'll look further.  One can add a shortcode [amr-clearskys-bookings property=1 months=2 feedlink="ical" ]  , but the resultant link does not work.  Or
@@ -55,4 +61,4 @@ Also happy to add a form for adding properties if someone wants to contribute to
 
 = Css?=
 
-Add the provided calendar css to your themes stylesheet.
+Add the provided calendar css to your themes stylesheet.  Please note that for some reason clearsky used different css classes etc for the widget. I am not redoingtheir whole plugin, so you will just have to deal with that - since you are unlikey to be using both, just put one or other batch of css in.
