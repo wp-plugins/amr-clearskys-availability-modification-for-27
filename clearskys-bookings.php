@@ -33,8 +33,9 @@ define('WPCPLUGINURL',  WP_PLUGIN_URL .'/' .WPCPLUGINNAME) ;
 define('WPCPLUGINDIR',  dirname(__FILE__)) ;
 
 include_once('includes/csbooking.php');
-if (file_exists('amr_props.php') )include('amr_props.php');  /* the definition of the properties */
-else  $amr_props[1] = "Property 1";
+$amr_props[1] = "Rental Property 1";
+@include('amr_props.php');  /* the definition of the properties */
+
 
 class CSbook
 {
@@ -521,6 +522,7 @@ function cs_bookings_menu() { /* amr*/
 	function show_booking_results() {
 		// Get current database settings
 		global $wpdb;
+		global $amr_props;
 		$cs = get_option("clearskys_config"); 
   		$tblbooking = $wpdb->prefix . "cs_booking";
   		$booking = new CSbooking($wpdb,$tblbooking);
@@ -629,7 +631,7 @@ function cs_bookings_menu() { /* amr*/
  					$ref = $csproperty->getrefforproperty($row['property_id']);
  					echo ($ref) ? $ref[0]['reference'] : $row['property_id'];
  				} else {
- 					echo $row['property_id'];
+ 					echo $amr_props[$row['property_id']]; /* amr */
  				}
  				echo " (" . $booking->status($row['status']);
  				echo ")";
