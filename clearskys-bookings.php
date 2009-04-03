@@ -3,7 +3,7 @@
 Plugin Name: AmR Clearskys Booking manager
 Plugin URI: http://blog.clearskys.net/plugins/availability-plugin/
 Description: A version of the clearksy availability calendar and administration booking management engine - modifoed for 2.7 compatibility
-Version: 1.1c
+Version: 1.1d
 Author: clearskys.net, modified by anmari
 Author URI: http://blog.clearskys.net, http://anmari.com
 */
@@ -28,7 +28,8 @@ Author URI: http://blog.clearskys.net, http://anmari.com
 $endpos1 = strripos(dirname(__FILE__), '/');
 $endpos2 = strripos(dirname(__FILE__), '\\');
 if ($endpos1 < $endpos2) {$endpos1 = $endpos2;}
-define('WPCPLUGINURL',  WP_PLUGIN_URL .'/' .substr(dirname(__FILE__), $endpos1+1 )) ;
+define('WPCPLUGINNAME', substr(dirname(__FILE__), $endpos1+1 ));
+define('WPCPLUGINURL',  WP_PLUGIN_URL .'/' .WPCPLUGINNAME) ;
 define('WPCPLUGINDIR',  dirname(__FILE__)) ;
 
 include_once('includes/csbooking.php');
@@ -51,7 +52,7 @@ class CSbook
 		// Administration header styles and javascript
 		add_action('admin_head', array(&$this,'add_admin_header'));
 		// Front end
-		add_shortcode('amr-clearskys-bookings', array(&$this,'process_hooks'));
+		add_shortcode('amr-clearskys-bookings', array(&$this,'process_hooks'));  /* this one can stya amr-... as it is the shortcode */
 	//	add_filter('the_content', array(&$this,'process_hooks'));
 		// add ajax call trap
 		add_action('init',array(&$this,'check_ajax'));
@@ -647,11 +648,12 @@ function cs_bookings_menu() { /* amr*/
  				echo "</span>";
  				// Edit and delete menu
  				echo "<span class='menu'>";
- 				echo "<a class='editlink' id='editbooking-" . $row['id'] . "' href='admin.php?page=amr-clearskys-bookings/clearskys-bookings.php&amp;bookingid=" 
-				. $row['id'] . $backlist . "&amp;action=edit' title='Click to edit this booking'>";
+ /*amr */				echo "<a class='editlink' id='editbooking-" . $row['id'] . "' href='admin.php?page="
+					. WPCPLUGINNAME."/clearskys-bookings.php&amp;bookingid=" 
+				    . $row['id'] . $backlist . "&amp;action=edit' title='Click to edit this booking'>";
  				echo "edit</a>";
  				echo " | ";
- 				echo "<a class='deletelink' id='deletebooking-" . $row['id'] . "' href='admin.php?admin.php?page=amr-clearskys-bookings/clearskys-bookings.php&amp;bookingid=" 
+ 				echo "<a class='deletelink' id='deletebooking-" . $row['id'] . "' href='admin.php?admin.php?page=".WPCPLUGINNAME."/clearskys-bookings.php&amp;bookingid=" 
 				. $row['id'] . "&amp;action=delete'' title='Click to delete this booking'>";
  				echo "delete</a>";
  				echo "</span>";
@@ -909,7 +911,8 @@ function cs_bookings_menu() { /* amr*/
   		
 		if($result == "") {
   			// Add Ok
-  			$this->show_add_panel("Booking added successfully. <a href='admin.php?page=amr-clearskys-bookings/clearskys-bookings.php'>View bookings.</a>");
+  			$this->show_add_panel("Booking added successfully. <a href='admin.php?page="
+			.WPCPLUGINNAME."/clearskys-bookings.php'>View bookings.</a>");
   		} else
   		{
   			// Error show form again with msg
@@ -1536,7 +1539,7 @@ function cs_bookings_menu() { /* amr*/
 		$backlist = "&amp;propertyid=" . $spropertyid . "&amp;sstatus=" . $sstatus . "&amp;m=" . $smonth . "&amp;s=" . $stext . "&amp;action=" . $baction;
 		?>
 		<br style="clear:both;" />
-		<p><a href="admin.php?page=amr-clearskys-bookings/clearskys-bookings.php<?php echo $backlist; ?>">&laquo; Return to booking list</a></p>
+		<p><a href="admin.php?page=<?php echo WPCPLUGINNAME; ?>/clearskys-bookings.php<?php echo $backlist; ?>">&laquo; Return to booking list</a></p>
 	
 		<?php 		/* fixed amr */
 	}

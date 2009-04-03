@@ -4,8 +4,8 @@ Donate link: http://webdesign.anmari.com/web-tools/donate/
 Tags: calendar, property, properties, availability, widget
 Requires at least: 2.6
 Tested up to: 2.7.1
-Version: 1.1c
-Stable tag: 1.1c
+Version: 1.1d
+Stable tag: 1.1d
 
 Clearskys Property Availability calendar modified for 2.7.1 with wordpress in own directory, shortcodes, multiple properties (rudimentary).
 
@@ -15,6 +15,8 @@ Please see [Clearskys](http://dev.clearskys.net/Wordpress/Availability)  for all
 
 
 == Version History ==
+= Version 1.1c =
+*   fix plugin name everyhwere, including edit and delete !   
 
 = Version 1.1c =
 *   more fix to folder url
