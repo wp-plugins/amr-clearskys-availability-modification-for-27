@@ -16,7 +16,6 @@ Please see [Clearskys](http://dev.clearskys.net/Wordpress/Availability)  for all
 
 == Version History ==
 
-
 = Version 1.1c =
 *   more fix to folder url
 *   also changed the property file to be a sample, and chcek for existence so as not to over right on upgrade!  So if it is a new install, you need to copy the amr_props_sample.php to amr_props.php, or else you will only have 1 property!
@@ -42,10 +41,10 @@ Also happy to add a form for adding properties if someone wants to contribute to
 
 1. Unzip the folder into your wordpress plugins folder.
 2. Activate the plugin through the 'Plugins' menu in WordPress
-3. Add  [amr-clearskys-bookings  property=1 months=12] to a page and to reference a single property.  NB Property must be before month due to way that original logic was coded.
-4. Manage the plugin through the Bookings admin screen.
-6. Add calendar css to your css.
-7. If you are using the provided css, Check in the Bookings config that the month block has <div class="calendar"><table>{monthblock}</table></div>
+3. For more than 1 property, copy the amr_props_sample.php to amr_props.php, add/deletes line as indicated!
+4. Add  [amr-clearskys-bookings  property=1 months=12] to a page and to reference a single property.  NB Property must be before month due to way that original logic was coded.
+5. Manage the plugin through the Bookings admin screen.
+6. Add calendar css to your css.  If you are using the provided css, Check in the Bookings config that the month block has <div class="calendar"><table>{monthblock}</table></div>
 
 == Screenshots ==
 

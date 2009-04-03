@@ -3,7 +3,7 @@
 Plugin Name: AmR Clearskys Booking manager
 Plugin URI: http://blog.clearskys.net/plugins/availability-plugin/
 Description: A version of the clearksy availability calendar and administration booking management engine - modifoed for 2.7 compatibility
-Version: 1.1
+Version: 1.1c
 Author: clearskys.net, modified by anmari
 Author URI: http://blog.clearskys.net, http://anmari.com
 */
