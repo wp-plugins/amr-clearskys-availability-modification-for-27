@@ -1,20 +1,31 @@
-=== AmR Clearskys Availability modification for 2.7 ===
-Contributors: Clearskys.net, Anmari
-Donate link: http://webdesign.anmari.com/web-tools/donate/
+=== amr property availability (orig clearksys) ===
+Contributors: clearskys, anmari
 Tags: calendar, property, properties, availability, widget
 Requires at least: 2.6
-Tested up to: 2.7.1
-Version: 1.1d
-Stable tag: 1.1d
+Tested up to: 3.4.1
+Version: 1.2
+Stable tag: 1.2
 
-Clearskys Property Availability calendar modified for 2.7.1 with wordpress in own directory, shortcodes, multiple properties (rudimentary).
+Offers simple bookings management for simple properties. Has an availability calendar per property and a feed.
 
 == Description ==
+The original Clearskys Property Availability calendar appears to be no more.
+This version was modified for 2.7.1 with wordpress in own directory, shortcodes, multiple properties (rudimentary).
+I have done a simple update, removing deprecated calls and notices. 
+It could use a property add module (that was in clearskys 'paid' version I think), 
+so has a rudimentary method to add the properties if you need more than one.
+For more than 1 property, copy the amr_props_sample.php to amr_props.php, add/deletes line as indicated!
 
-Please see [Clearskys](http://dev.clearskys.net/Wordpress/Availability)  for all functioning.  I altered as noted for my own purposes - I could not wait till they delivered a new version.   I took some extra time to offer it up to the wordpress community as it seemed there were a few folk needing it.   If this fix was helpful, please donate, or write a credit post linking back to my site!  Don't forget to acknowledge the original authors.
+I altered as noted for my own purposes - I could not wait till they delivered a new version.   
+I took some extra time to offer it up to the wordpress community as it seemed there were a few folk needing it.   
 
 
 == Version History ==
+= Version 1.2 =
+*   fixed deprecated calls and notices. 
+*   basic testing on 3.4.1
+
+
 = Version 1.1c =
 *   fix plugin name everyhwere, including edit and delete !   
 
@@ -62,4 +73,7 @@ Also happy to add a form for adding properties if someone wants to contribute to
 
 = Css?=
 
-Add the provided calendar css to your themes stylesheet.  Please note that for some reason clearsky used different css classes etc for the widget. I am not redoingtheir whole plugin, so you will just have to deal with that - since you are unlikey to be using both, just put one or other batch of css in.
+Add the provided calendar css to your themes stylesheet.  
+Please note that for some reason clearsky used different css classes etc for the widget. 
+I am not redoing their whole plugin, so you will just have to deal with that.
+Since you are unlikey to be using both, just put one or other batch of css in.

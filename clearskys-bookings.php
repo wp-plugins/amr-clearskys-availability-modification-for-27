@@ -1,10 +1,10 @@
 <?php
 /*
-Plugin Name: AmR Clearskys Booking manager
+Plugin Name: amr property availability (orig clearksys)
 Plugin URI: http://blog.clearskys.net/plugins/availability-plugin/
 Description: A version of the clearksy availability calendar and administration booking management engine - modifoed for 2.7 compatibility
-Version: 1.1d
-Author: clearskys.net, modified by anmari
+Version: 1.2
+Author: clearskys, anmari
 Author URI: http://blog.clearskys.net, http://anmari.com
 */
 /*  Copyright 2007 clearskys.net Ltd  (email : team@clearskys.net)
@@ -103,7 +103,7 @@ class CSbook
 
 
 	function check_ajax() {
-		if($_REQUEST['call'] == 'ajax') {
+		if(!empty($_REQUEST['call']) and ($_REQUEST['call'] == 'ajax') ){
 			if(stristr($_GET["page"],'clearskys-bookings') && /* amr */
 			function_exists('current_user_can') && current_user_can('moderate_comments')) {
 				$this->show_bookings_panel();
@@ -145,7 +145,7 @@ function cs_bookings_menu() { /* amr*/
 	{
 	// Create the  submenus 
 
-      add_object_page('Bookings','Bookings','edit_published_posts',__FILE__,array(&$this,'show_bookings_panel'));
+      $hookname = add_object_page('Bookings','Bookings','edit_published_posts',__FILE__,array(&$this,'show_bookings_panel'));
 	  //'tools.php?page=amr-clearskys-bookings/clearskys-bookings.php',array(&$this,'show_bookings_panel'));   
 	if(function_exists('add_submenu_page')) {
 	   	// Add a submenu to the custom top-level menu: 
@@ -153,7 +153,7 @@ function cs_bookings_menu() { /* amr*/
 //		add_submenu_page(__FILE__, "List Bookings","List Bookings", 6,	
 //		'tools.php?page=amr-clearskys-bookings/clearskys-bookings.php', array(&$this,'show_bookings_panel'));
 //	add_submenu_page(__FILE__, "Add Booking", "Add Booking", 6, __FILE__, array(&$this,'handle_booking_form'));
-		add_submenu_page(__FILE__, "Add Booking", "Add Booking", 6, 'add_bookings', array(&$this,'handle_booking_form'));
+		add_submenu_page(__FILE__, "Add Booking", "Add Booking", 'edit_published_posts', 'add_bookings', array(&$this,'handle_booking_form'));
 
 		}		
 	  
@@ -162,7 +162,7 @@ function cs_bookings_menu() { /* amr*/
 		if (current_user_can('edit_published_posts') ) {
 			if (current_user_can('manage_options') ) {
 //				add_options_page(__('Booking options'), __('Bookings Config'), 8, __FILE__, array(&$this,'show_options_panel'));
-			add_submenu_page (__FILE__,__('Booking options'), __('Bookings Config'), 8,
+			add_submenu_page (__FILE__,__('Booking options'), __('Settings'), 'manage_options',
 			'bookings_config', array(&$this,'show_options_panel'));
 			}
 //amr			add_management_page("Manage Bookings", "Bookings", 6, __FILE__, array(&$this,'show_bookings_panel'));	
@@ -177,7 +177,7 @@ function cs_bookings_menu() { /* amr*/
 		
 //amr		$plugin_uri = 'http://localhost/wptest/wp-content/plugins/clearskys/includes/';
 		
-		if(stristr($_GET["page"], 'bookings' ))  {
+		if(!empty ($_GET["page"]) and (stristr($_GET["page"], 'bookings' )))  {
 			echo '<script type="text/javascript" src="' .WPCPLUGINURL . '/includes/js/yahoo-dom-event.js" ></script>';
 			echo '<script type="text/javascript" src="' .WPCPLUGINURL . '/includes/js/connection.js" ></script>';
 			echo '<script type="text/javascript" src="' .WPCPLUGINURL . '/includes/js/animation.js" ></script>';
@@ -273,7 +273,7 @@ function cs_bookings_menu() { /* amr*/
 		
 		?> 
 			<fieldset class="options">
-			<legend>Calendar Options</legend>
+			<h3>Calendar Options</h3>
 			<p>Use the settings below to modify the layout and style of each month in your calendar.</p>
 			
 			
@@ -341,8 +341,8 @@ function cs_bookings_menu() { /* amr*/
 			</table>
 			</fieldset>
 			
-			<fieldset class="options">
-			<legend>Booking Options</legend>
+<?php /*			<fieldset class="options">
+			<h2>Booking Options</h2>
 			<p>If you are synchronising your bookings with a Clearskys.net server, then enter the assigned number of your property below. To find out the number of your property, login to your account at <a href="http://www.clearskys.net" target=_blank>Clearskys.net</a>
 			and make a note of the number next to your property details on the left hand of your property list.</p>
 			<p>If you are not synchronising, then leave the Property ID set to 1.</p>
@@ -356,9 +356,9 @@ function cs_bookings_menu() { /* amr*/
 			
 			</table>
 			</fieldset>
-			
+*/?>			
 			<fieldset class="options">
-			<legend>Calendar Feeds</legend>
+			<h3>Calendar Feeds</h3>
 			<p>Use the settings below to setup the URLs that you want use for your Calendar feeds. The public feed outputs basic information about the bookings and can be made available to your website users. You should make the private feed URL as un-guessable as possible as it outputs full information for the booking.</p>
 			<p>Please ensure there are no trailing slashes in your Feed URL</p>
 			<table width="100%" cellspacing="2" cellpadding="5" class="editform"> 
@@ -367,26 +367,28 @@ function cs_bookings_menu() { /* amr*/
 			<td><input name="clearskys_publicpath" type="text" id="clearskys_publicpath" value="<?php echo $cs["clearskys_publicpath"]; ?>" size="25" style="width: 20em; " /> 
 			<?php
 			if($cs["clearskys_publicpath"]!="") {
-				echo "&nbsp;<a href='" .  get_settings('siteurl')  . $cs["clearskys_publicpath"];
+				echo "&nbsp;<a href='" .  get_option('siteurl')  . $cs["clearskys_publicpath"];
 				if($this->isquerystring($cs["clearskys_publicpath"])) {
-					echo "&property=" . $cs["clearskys_propertyno"] . "&feed=ical";
+					echo "&property=" . 
+					$cs["clearskys_propertyno"] . "&feed=ical";
 				} else {
 					echo "/" . $cs["clearskys_propertyno"] . "?feed=ical";
 				}
 				echo "' title='Subscribe to iCal feed'>";
 				echo "<img src='" 
 								. WPCPLUGINURL ."/includes/images/date22x22.png' alt='iCal feed' width='22' height='22' style='vertical-align: bottom;' />";
-//amr				.  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/date22x22.png' alt='iCal feed' width='22' height='22' style='vertical-align: bottom;' />";
-				echo "</a>&nbsp;<a href='" .  get_settings('siteurl') . $cs["clearskys_publicpath"];
+//amr				.  get_option('siteurl')  . "/wp-content/plugins/clearskys/includes/images/date22x22.png' alt='iCal feed' width='22' height='22' style='vertical-align: bottom;' />";
+				echo "</a>&nbsp;<a href='" .  get_option('siteurl') . $cs["clearskys_publicpath"];
 				if($this->isquerystring($cs["clearskys_publicpath"])) {
-					echo "&property=" . $cs["clearskys_propertyno"] . "&feed=RSS";
+					echo "&property=" . 
+					$cs["clearskys_propertyno"] . "&feed=RSS";
 				} else {
 					echo "/" . $cs["clearskys_propertyno"] . "?feed=RSS";
 				}
 				echo "' title='Subscribe to RSS feed'>";
 				echo "<img src='" 
 				.WPCPLUGINURL .  "/includes/images/feed-icon16x16.png' alt='RSS feed' width='16' height='16' style='vertical-align: text-top;' />";
-//amr				.  get_settings('siteurl')  . "/wp-content/plugins/clearskys/includes/images/feed-icon16x16.png' alt='RSS feed' width='16' height='16' style='vertical-align: text-top;' />";
+//amr				.  get_option('siteurl')  . "/wp-content/plugins/clearskys/includes/images/feed-icon16x16.png' alt='RSS feed' width='16' height='16' style='vertical-align: text-top;' />";
 				echo "</a>";
 			}
 			?>
@@ -397,17 +399,19 @@ function cs_bookings_menu() { /* amr*/
 			<td><input name="clearskys_privatepath" type="text" id="clearskys_privatepath" value="<?php echo $cs["clearskys_privatepath"]; ?>" size="25" style="width: 20em; " /> 
 			<?php
 			if($cs["clearskys_privatepath"]!="") {
-				echo "&nbsp;<a href='" .  get_settings('siteurl')  . $cs["clearskys_privatepath"];
+				echo "&nbsp;<a href='" .  get_option('siteurl')  . $cs["clearskys_privatepath"];
 				if($this->isquerystring($cs["clearskys_privatepath"])) {
-					echo "&property=" . $cs["clearskys_propertyno"] . "&feed=ical";
+					echo "&property=" . 
+					$cs["clearskys_propertyno"] . "&feed=ical";
 				} else {
 					echo "/" . $cs["clearskys_propertyno"] . "?feed=ical";
 				}
 				echo "' title='Subscribe to iCal feed'>";
 				echo "<img src='" .   WPCPLUGINURL ."/includes/images/date22x22.png' alt='iCal feed' width='22' height='22' style='vertical-align: bottom;' />";
-				echo "</a>&nbsp;<a href='" .  get_settings('siteurl') . $cs["clearskys_privatepath"];
+				echo "</a>&nbsp;<a href='" .  get_option('siteurl') . $cs["clearskys_privatepath"];
 				if($this->isquerystring($cs["clearskys_privatepath"])) {
-					echo "&property=" . $cs["clearskys_propertyno"] . "&feed=RSS";
+					echo "&property=" . 
+					$cs["clearskys_propertyno"] . "&feed=RSS";
 				} else {
 					echo "/" . $cs["clearskys_propertyno"] . "?feed=RSS";
 				}
@@ -422,7 +426,7 @@ function cs_bookings_menu() { /* amr*/
 			</fieldset>
 			
 			<fieldset class="options">
-			<legend>Language Options</legend>
+			<h3>Language Options</h3>
 			<p>Use the settings below to change the output language of the booking dates. Note: This currently only changes the language of the date information, the interface will still be in the current language.</p>
 			
 			<table width="100%" cellspacing="2" cellpadding="5" class="editform"> 
@@ -452,7 +456,7 @@ function cs_bookings_menu() { /* amr*/
 			</fieldset>
 			
 			<fieldset class="options">
-			<legend>Start of Week</legend>
+			<h3>Start of Week</h3>
 			<p>Set the starting day of the week below. Make sure that you also modify the <b>Week Header</b> setting above so that the labels match the days.</p>
 			
 			<table width="100%" cellspacing="2" cellpadding="5" class="editform"> 
@@ -492,6 +496,7 @@ function cs_bookings_menu() { /* amr*/
 	function show_bookings_panel()
 	{ 
 		//handle booking operations
+		if (!empty($_REQUEST['action']) ) {
 		switch($_REQUEST['action']) {
 			case "search":
 				$this->show_panel();
@@ -517,6 +522,8 @@ function cs_bookings_menu() { /* amr*/
 				$this->show_panel();
 				break;
 		}
+		}
+		else $this->show_panel();
 	}
 	
 	function show_booking_results() {
@@ -526,12 +533,15 @@ function cs_bookings_menu() { /* amr*/
 		$cs = get_option("clearskys_config"); 
   		$tblbooking = $wpdb->prefix . "cs_booking";
   		$booking = new CSbooking($wpdb,$tblbooking);
-  		$site_uri = get_settings('siteurl');
+  		$site_uri = get_option('siteurl');
   		$plugin_uri =  WPCPLUGINURL .'/includes/'; /* amr */
   		setlocale(LC_ALL,$cs["clearskys_adminlocale"]);
-  		
-		if($_REQUEST['action'] == "") {
-			if($propertyid == "") $propertyid = 0;
+ 		if (!empty ($_REQUEST["property_id"])) 
+			$propertyid = $_REQUEST["property_id"];
+		else $propertyid = 1;	
+			
+		if (!isset($_REQUEST['action']) or ( $_REQUEST['action'] == "")) {
+
 			$rows = $booking->getinitiallist();
 			$nomsg = "There are no bookings taking place this month...";
 			$backlist = "&amp;baction=";
@@ -539,27 +549,36 @@ function cs_bookings_menu() { /* amr*/
 		} else {
 			$nomsg = "You do not currently have any bookings with this criteria...";
 			$rows = array();
-			
-			$spropertyid = $booking->xss_clean($_REQUEST["propertyid"]);
-			$sstatus = $booking->xss_clean($_REQUEST["sstatus"]);
-			if (isset($_REQUEST["m"])) {
-				$smonth = $booking->xss_clean($_REQUEST["m"]); 
-				}
-			else $smonth = 'All months'; 
-			$stext = $booking->xss_clean($_REQUEST["s"]);
-			
-			$backlist = "&amp;propertyid=" . $spropertyid . "&amp;sstatus=" . $sstatus . "&amp;m=" . $smonth . "&amp;s=" . $stext . "&amp;baction=search";
-			
-			$rows = $booking->getsearchlist($stext, $sstatus, $smonth, $spropertyid);
+			if ($propertyid) {
+				$spropertyid = $booking->xss_clean($propertyid);
+				if (isset($_REQUEST["sstatus"])) 
+					$sstatus = $booking->xss_clean($_REQUEST["sstatus"]);
+				else
+					$sstatus = '';
+				if (isset($_REQUEST["m"])) {
+					$smonth = $booking->xss_clean($_REQUEST["m"]); 
+					}
+				else $smonth = ''; 
+				if (isset($_REQUEST["s"])) 
+					$stext = $booking->xss_clean($_REQUEST["s"]);
+				else 
+					$stext = '';
+				
+				$backlist = "&amp;propertyid=" . $spropertyid . "&amp;sstatus=" . $sstatus . "&amp;m=" . $smonth . "&amp;s=" . $stext . "&amp;baction=search";
+				
+				$rows = $booking->getsearchlist($stext, $sstatus, $smonth, $spropertyid);
+				
+			}
 		}
   		
 		?> 
 		 
 		<div class="resultsheader">
-		<span class="searchheading">Search results (NB re-search to see all)(<a href="admin.php?page=add_bookings">add new booking</a>)</span> 
+		<span class="searchheading">Search results (NB re-search to see all)( 
+		<a href="<?php echo add_query_arg('page','add_bookings',get_admin_url('','admin.php')); ?>">add new booking</a>)</span> 
 		<?php /* amr */
 			if($cs["clearskys_privatepath"]!="") {
-				echo "<a class='feedlink' href='" .  get_settings('siteurl') . $cs["clearskys_privatepath"];
+				echo "<a class='feedlink' href='" .  get_option('siteurl') . $cs["clearskys_privatepath"];
 				if($this->isquerystring($cs["clearskys_privatepath"])) {
 					echo "&property=" . $spropertyid . "&feed=RSS";
 				} else {
@@ -573,11 +592,11 @@ function cs_bookings_menu() { /* amr*/
 				echo "' title='Subscribe to RSS feed'>";
 
 				echo '<img src="' .  
-				//get_settings('siteurl')  . "/wp-content/plugins" amr
+				//get_option('siteurl')  . "/wp-content/plugins" amr
 				WPCPLUGINURL.
 				'/includes/images/feed-icon16x16.png" alt="RSS feed" width="16" height="16" style="vertical-align: text-top;" />';
 				echo "</a>";
-				echo "<a class='feedlink' href='" .  get_settings('home')  . $cs["clearskys_privatepath"]; /* amr */
+				echo "<a class='feedlink' href='" .  get_option('home')  . $cs["clearskys_privatepath"]; /* amr */
 				if($this->isquerystring($cs["clearskys_privatepath"])) {
 					echo "&property=" . $spropertyid . "&feed=ical";
 				} else {
@@ -680,9 +699,15 @@ function cs_bookings_menu() { /* amr*/
 		$cs = get_option("clearskys_config"); 
   		$tblbooking = $wpdb->prefix . "cs_booking";
   		$booking = new CSbooking($wpdb,$tblbooking);
-  		$site_uri = get_settings('siteurl'); /* amr */
+  		$site_uri = get_option('siteurl'); /* amr */
   		$plugin_uri =  WPCPLUGINURL .'/includes/';
   		setlocale(LC_ALL,$cs["clearskys_adminlocale"]);
+		
+		if (!empty ($_REQUEST['propertyid'])) 
+			$propertyid = $_REQUEST['propertyid'];
+		else
+			$propertyid = '';
+			
   		
 		if($msg != "") {
 			echo '<div id="message" class="updated fade"><p><strong>' . $msg . '</strong></p></div>';
@@ -714,7 +739,9 @@ function cs_bookings_menu() { /* amr*/
 									<select name='sstatus' id='sstatus'>
 								    <?php
 								    			$stats = $booking->statuslist();
-								    			$st = $booking->xss_clean($_REQUEST['sstatus']);
+												if (!empty($_REQUEST['sstatus'])) 
+													$st = $booking->xss_clean($_REQUEST['sstatus']);
+												else $st = '';	
 								    			echo '<option value="" ';
 								    			if($st == "")  echo 'selected="selected"';
 								    			echo '>Any Status</option>';
@@ -728,7 +755,7 @@ function cs_bookings_menu() { /* amr*/
 									</select>
 									<label for="propertyid">For property:</label>
 									<select name="propertyid" id="propertyid">
-										<option value="" <?php if('' == $_REQUEST['propertyid']) echo 'selected="selected"'; ?>>All Properties</option>
+										<option value="" <?php if('' == $propertyid) echo 'selected="selected"'; ?>>All Properties</option>
 									<?php
 
 										if(class_exists('CSproperty')) {
@@ -746,7 +773,7 @@ function cs_bookings_menu() { /* amr*/
 									
 												if (isset($amr_props)) foreach($amr_props as $key => $value) {
 							    				echo '<option  value="' . $key. '" ';
-							    				if($_REQUEST['propertyid'] != "" && $_REQUEST['propertyid'] == $key) echo 'selected="selected"';
+							    				if(($propertyid != "") && ($propertyid == $key)) echo 'selected="selected"';
 							    				echo '>' . $value . '</option>';
 								    			}
 												
@@ -771,7 +798,10 @@ function cs_bookings_menu() { /* amr*/
 								    			echo '<option  value="">No Bookings entered</option>';
 								    		} else {
 								    			$options = $booking->getstartdates();
-								    			$m = $booking->xss_clean($_REQUEST['m']);
+								    			if (!empty($_REQUEST['m'])) 
+													$m = $booking->xss_clean($_REQUEST['m']);
+												else 
+													$m = '';
 								    			echo '<option  value="">All months</option>';
 								    			foreach($options as $opt) {
 								    				echo '<option  value="' . $opt['optval'] . '" ';
@@ -782,9 +812,14 @@ function cs_bookings_menu() { /* amr*/
 								    		}
 								    ?>
 									</select>
-									
+									<?php if (!empty($_REQUEST['s'])) 
+										$s = htmlspecialchars(strip_tags(stripslashes($_REQUEST['s'])), ENT_QUOTES); 
+									else 
+										$s = '';
+									?>
 									<label for="s">Containing the text:</label>
-									<input name="s" id="s" type="text" value="<?php echo htmlspecialchars(strip_tags(stripslashes($_REQUEST['s'])), ENT_QUOTES); ?>" size="20" />
+									<input name="s" id="s" type="text" value="
+									<?php echo $s; ?>" size="20" />
 									
 									<input name="search" id="search" type="submit" value="Search" />
 
@@ -820,7 +855,7 @@ function cs_bookings_menu() { /* amr*/
   		$tblbooking = $wpdb->prefix . "cs_booking";
   		$booking = new CSbooking($wpdb,$tblbooking);
   		$booking->setid($id);
-  		$siteurl = get_settings('siteurl');
+  		$siteurl = get_option('siteurl');
   		
   		do_action("clearskys_booking_predelete", $id);
 		$result = $booking->delete($id);
@@ -845,7 +880,7 @@ function cs_bookings_menu() { /* amr*/
   		$tblbooking = $wpdb->prefix . "cs_booking";
   		$booking = new CSbooking($wpdb,$tblbooking);
   		$booking->setid($id);
-  		$siteurl = get_settings('siteurl');
+  		$siteurl = get_option('siteurl');
   		// Get the entered details
   		$data = array(
   					'id' => $id,
@@ -889,7 +924,7 @@ function cs_bookings_menu() { /* amr*/
 		$cs = get_option("clearskys_config"); 
   		$tblbooking = $wpdb->prefix . "cs_booking";
   		$booking = new CSbooking($wpdb,$tblbooking);
-  		$siteurl = get_settings('siteurl');
+  		$siteurl = get_option('siteurl');
   		// Get the entered details
   		$data = array(
   					'property_id' => $_POST['property_id'],
@@ -959,7 +994,7 @@ function cs_bookings_menu() { /* amr*/
 		$cs = get_option("clearskys_config"); 
   		$tblbooking = $wpdb->prefix . "cs_booking";
   		$booking = new CSbooking($wpdb,$tblbooking);
-  		$siteurl = get_settings('siteurl');
+  		$siteurl = get_option('siteurl');
 		
 		if($msg != "") {
 			echo '<div id="message" class="updated fade"><p><strong>' . $msg . '</strong></p></div>';
@@ -967,10 +1002,20 @@ function cs_bookings_menu() { /* amr*/
   		if($error) {
   			$row = $error;
   		} else {
-  			$row = array(	'startdate' => date('Y-m-d'),
-  							'enddate' => date('Y-m-d'),
-  							'depositamount' => '0',
-  							'fullamount' => '0',
+  			$row = array(	
+			'id'=> 1,
+			'title'=>'',
+			'property_id'=>'1',
+			'rentername'=>'',
+			'renteremail'=>'',
+			'rentertel'=>''	,		
+			'startdate' => date('Y-m-d'),
+  			'enddate' => date('Y-m-d'),
+  			'depositamount' => '0',
+  			'fullamount' => '0',
+			'status' => '',
+			'renternotes' => '',
+			'notes' => ''
   						);
   		}
 		//print_r($row);
@@ -986,7 +1031,9 @@ function cs_bookings_menu() { /* amr*/
 	}
 	
 	
-	function add_booking_form($row, $booking, $cs)
+	function add_booking_form(
+		$row,
+		$booking, $cs)
 	{
 		global $wpdb;
 		global $amr_props;
@@ -1013,7 +1060,9 @@ function cs_bookings_menu() { /* amr*/
 							<?php
 							foreach($prows as $prow) {
 								?>
-								<option value="<?php echo $prow['id']; ?>" <?php echo ($row['property_id'] == $prow['id']) ? 'selected="selected"' : ''; ?>><?php echo $prow['reference']; ?></option>
+								<option value="<?php echo $prow['id']; 
+								?>" <?php echo ($row['property_id'] == $prow['id']) ? 'selected="selected"' : ''; 
+								?>><?php echo $prow['reference']; ?></option>
 								<?php
 							}
 							?>
@@ -1025,34 +1074,39 @@ function cs_bookings_menu() { /* amr*/
 							<input type="hidden" name="property_id" value="<?php echo $cs['clearskys_propertyno']; ?>" />
 							<?php
 						} 
-					} else { 
-					if (isset ($amr_props)) {			
-							?>
-					<p><label for="property_id"><strong>Property reference</strong></label><br />
-					<select name="property_id" id="property_id" style="width: 15em; padding: 2px;">
-							<?php
-							foreach($amr_props as $key => $name) {
+					} 
+					else { 
+						if (isset ($amr_props)) {	
+							//$row = $amr_props;
 								?>
-								<option value="<?php echo $key; ?>"> <?php echo $name; ?></option>
+						<p><label for="property_id"><strong>Property reference</strong></label><br />
+						<select name="property_id" id="property_id" style="width: 15em; padding: 2px;">
 								<?php
-							}
-							?>
-							</select>
+								foreach($amr_props as $key => $name) {
+									?>
+									<option value="<?php echo $key; ?>"> <?php echo $name; ?></option>
+									<?php
+								}
+								?>
+								</select>
+								</p>
+								<?php
+								}
+						else {	
+							
+							?>		
+							
 							</p>
-							<?php
-							}
-					else {?>		
-					
-					</p>
-							<input type="hidden" name="property_id" value="<?php echo $cs['clearskys_propertyno']; ?>" /> 
-							<?php
-						
-					}
+									<input type="hidden" name="property_id" value="<?php echo $cs['clearskys_propertyno']; ?>" /> 
+									<?php
+								
+						}
 					}
 					?>
 
 					<p><label for="bookingtitle"><strong>Title</strong></label><br />
-					<input name="bookingtitle" id="bookingtitle" value="<?php echo $row['title']; ?>" size="35" style="width: 25em; padding: 2px;" />
+					<input name="bookingtitle" id="bookingtitle" 
+					value="<?php echo $row['title']; ?>" size="35" style="width: 25em; padding: 2px;" />
 					</p>
 					<p><label for="startday"><strong>Arrival date / time</strong></label><br />
 					<select name="startday" id="startday" style="width: 5em; padding: 2px;">
@@ -1231,7 +1285,7 @@ function cs_bookings_menu() { /* amr*/
   		$booking = new CSbooking($wpdb,$tblbooking);
   		$id = $booking->xss_clean($id);
   		$booking->setid($id);
-  		$siteurl = get_settings('siteurl');
+  		$siteurl = get_option('siteurl');
   		setlocale(LC_ALL,$cs["clearskys_adminlocale"]);
 		
 		if($msg != "") {
@@ -1531,12 +1585,17 @@ function cs_bookings_menu() { /* amr*/
 		
 		<?php
 		}
-		
-		$spropertyid = $_REQUEST["propertyid"];
-		$sstatus = $_REQUEST["sstatus"];
-		$smonth = $_REQUEST["m"]; 
-		$stext = $_REQUEST["s"];
-		$baction = $_REQUEST["baction"];
+		$spropertyid = '';
+		$sstatus = '';
+		$smonth = ''; 
+		$stext = '';
+		$baction = '';
+		if (!empty($_REQUEST["propertyid"])) $spropertyid = $_REQUEST["propertyid"];
+
+		if (!empty($_REQUEST["sstatus"])) $sstatus = $_REQUEST["sstatus"];
+		if (!empty($_REQUEST["m"])) $smonth = $_REQUEST["m"]; 
+		if (!empty($_REQUEST["s"])) $stext = $_REQUEST["s"];
+		if (!empty($_REQUEST["baction"])) $baction = $_REQUEST["baction"];
 			
 		$backlist = "&amp;propertyid=" . $spropertyid . "&amp;sstatus=" . $sstatus . "&amp;m=" . $smonth . "&amp;s=" . $stext . "&amp;action=" . $baction;
 		?>
@@ -1646,17 +1705,17 @@ function cs_bookings_menu() { /* amr*/
 						$format = $number;
 
 						if(strtolower($format) == 'rss' || strtolower($format) == 'ical') {
-							$link = "<a href='" .  get_settings('siteurl')  . $cs["clearskys_publicpath"];
+							$link = "<a href='" .  get_option('siteurl')  . $cs["clearskys_publicpath"];
 							if($propertyid) {
 								$useprop = $propertyid;
 							} else {
 								$useprop = $cs["clearskys_propertyno"];
 							}
-//							if($this->isquerystring($cs["clearskys_publicpath"])) {
+							if($this->isquerystring($cs["clearskys_publicpath"])) {
 								$link .= "&property=" . $useprop . "&feed=" . strtolower($format);
-//							} else {
-//								$link .=  "/" . $useprop . "?feed=" . strtolower($format);
-//							}
+							} else {
+								$link .=  "/" . $useprop . "?feed=" . strtolower($format);
+							}
 							if(strtolower($format) == 'rss') {
 								$link .= "' title='Subscribe to RSS feed'>";
 								$link .= "<img src='" .  WPCPLUGINURL . "/includes/images/feed-icon16x16.png' alt='RSS feed' width='16' height='16' style='vertical-align: text-top; border-width:0;' />";
@@ -1675,7 +1734,7 @@ function cs_bookings_menu() { /* amr*/
 						$format=$number;
 						if(strtolower($format) == 'rss' || strtolower($format) == 'ical') {
 							$link = "<a href='";
-							$useurl =  get_settings('siteurl')  . $cs["clearskys_publicpath"];
+							$useurl =  get_option('siteurl')  . $cs["clearskys_publicpath"];
 							if($propertyid) {
 								$useprop = $propertyid;
 							} else {
@@ -1708,7 +1767,7 @@ function cs_bookings_menu() { /* amr*/
 						$format = $number;
 
 						if(strtolower($format) == 'rss' || strtolower($format) == 'ical') {
-							$useurl =  get_settings('siteurl')  . $cs["clearskys_publicpath"];
+							$useurl =  get_option('siteurl')  . $cs["clearskys_publicpath"];
 							if($propertyid) {
 								$useprop = $propertyid;
 							} else {
@@ -1732,17 +1791,16 @@ function cs_bookings_menu() { /* amr*/
 	}
 	
 	function process_feed() {
-		$path = $_SERVER['REQUEST_URI'];
-		$feed = $_GET['feed'];
-		$cs = get_option('clearskys_config'); 
-		$siteurl = get_settings('siteurl');
-		$class = "";
-		
 		if(!isset($_GET['feed'])) {
 			// not a feed url so return
 			return;
 		}
-		
+		$path = $_SERVER['REQUEST_URI'];
+		$feed = $_GET['feed'];
+		$cs = get_option('clearskys_config'); 
+		$siteurl = get_option('siteurl');
+		$class = "";
+				
 		if(isset($_GET['property'])) {
 			// query string feed url
 			$path = "?" . $_SERVER['QUERY_STRING'];
@@ -1849,9 +1907,9 @@ function cs_bookings_menu() { /* amr*/
    				} else {
    					$title .= "$property";
    				}
-				header('Content-type: text/xml; charset='.get_settings('blog_charset'), true);
+				header('Content-type: text/xml; charset='.get_option('blog_charset'), true);
 				ob_start();
-				echo '<?xml version="1.0" encoding="'.get_settings('blog_charset').'"?'.'>';
+				echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>';
 				?>
 				<!-- generator="blog.clearskys.net/plugins/availability-plugin/" -->
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" <?php do_action('rss2_ns'); ?>>
@@ -1990,9 +2048,9 @@ function cs_bookings_menu() { /* amr*/
    				} else {
    					$title .= "$property";
    				}
-				header('Content-type: text/xml; charset='.get_settings('blog_charset'), true);
+				header('Content-type: text/xml; charset='.get_option('blog_charset'), true);
 				ob_start();
-				echo '<?xml version="1.0" encoding="'.get_settings('blog_charset').'"?'.'>';
+				echo '<?xml version="1.0" encoding="'.get_option('blog_charset').'"?'.'>';
 				?>
 				<!-- generator="blog.clearskys.net/plugins/availability-plugin/" -->
 <rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:wfw="http://wellformedweb.org/CommentAPI/" xmlns:dc="http://purl.org/dc/elements/1.1/" <?php do_action('rss2_ns'); ?>>

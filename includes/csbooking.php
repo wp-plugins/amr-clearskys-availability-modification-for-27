@@ -239,7 +239,7 @@ class CSbooking
 			$sql = "SELECT * FROM " . $this->table . " WHERE id = " . $lid . " LIMIT 0,1;";
 			
 			$result = $this->db->get_results($sql, ARRAY_A);
-			if(!is_null($result))
+			if(!empty($result))
 			{
 				return $result[0];
 			} else {
@@ -553,6 +553,7 @@ class CSbooking
 			if($result != '0') {
 				$error = "This booking overlaps an existing booking for this property\n";
 			}
+			else $error = '';
 			// update data
 			if($error == "") {
 				$sql = "INSERT INTO " . $this->table . " ";
