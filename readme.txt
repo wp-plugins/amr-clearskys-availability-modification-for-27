@@ -1,26 +1,33 @@
 === amr property availability (orig clearksys) ===
 Contributors: clearskys, anmari
-Tags: calendar, property, properties, availability, widget
+Tags: calendar, property, properties, availability, widget, guest, bookings
 Requires at least: 2.6
-Tested up to: 3.4.1
-Version: 1.2
-Stable tag: 1.2
+Tested up to: 4.2.2
+Version: 1.3
+Stable tag: trunk
 
 Offers simple bookings management for simple properties. Has an availability calendar per property and a feed.
 
 == Description ==
-The original Clearskys Property Availability calendar appears to be no more.
-This version was modified for 2.7.1 with wordpress in own directory, shortcodes, multiple properties (rudimentary).
+Simple property booking an availability plugin.  Works out the box for one property. Add your own little file from the sample for more properties.
+Add guest details, booking and payment status.
+
+This is a mod of the original Clearskys Property Availability calendar which appears to no longer exist.
+This version was initially modified for 2.7.1 with wordpress in own directory, shortcodes, multiple properties (rudimentary).
 I have done a simple update, removing deprecated calls and notices. 
 It could use a property add module (that was in clearskys 'paid' version I think), 
 so has a rudimentary method to add the properties if you need more than one.
 For more than 1 property, copy the amr_props_sample.php to amr_props.php, add/deletes line as indicated!
 
-I altered as noted for my own purposes - I could not wait till they delivered a new version.   
-I took some extra time to offer it up to the wordpress community as it seemed there were a few folk needing it.   
+It has now been slightly refreshed for wordpress 4.3  beta - minor changes.
 
 
 == Version History ==
+= Version 1.3 =
+*   fixed deprecated calls and notices. 
+*   added link in settings page to auto create the calendar availabiity shortode in a page.
+*   basic testing on 4.3alpha
+
 = Version 1.2 =
 *   fixed deprecated calls and notices. 
 *   basic testing on 3.4.1
@@ -62,11 +69,11 @@ Also happy to add a form for adding properties if someone wants to contribute to
 == Screenshots ==
 
 1. Added Bookings section in admin menu, also shows two properties, same dates
-2. Edit booking screen - shows property dropdown
+2. Availability calendar in twenty fifteen responsive small screen
 3. Add booking screen, also with property selection
-4. The write/edit page screen showing the shortcode usage
+4. Edit booking screen - shows property dropdown
 5. The file to be edited to show your property names on dropdowns.
-6. Calendar in page
+6. Calendar in page with custom styling
 
 
 == Frequently Asked Questions ==

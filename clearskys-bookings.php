@@ -34,8 +34,7 @@ define('WPCPLUGINDIR',  dirname(__FILE__)) ;
 
 include_once('includes/csbooking.php');
 $amr_props[1] = "Rental Property 1";
-@include('amr_props.php');  /* the definition of the properties */
-
+@include('amr-props.php');
 
 class CSbook
 {
@@ -53,12 +52,14 @@ class CSbook
 		// Administration header styles and javascript
 		add_action('admin_head', array(&$this,'add_admin_header'));
 		// Front end
-		add_shortcode('amr-clearskys-bookings', array(&$this,'process_hooks'));  /* this one can stya amr-... as it is the shortcode */
+		add_shortcode('amr-clearskys-bookings', array(&$this,'process_hooks'));  /* keep for comptibility */
+		add_shortcode('property-availability-calendar', array(&$this,'process_hooks'));  /* better descriptive shortcode */
 	//	add_filter('the_content', array(&$this,'process_hooks'));
 		// add ajax call trap
 		add_action('init',array(&$this,'check_ajax'));
 		// Feed output hooks
 		add_action('init',array(&$this,'process_feed'));
+
 
 	} 
 		
@@ -134,11 +135,7 @@ class CSbook
 
 function cs_bookings_menu() { /* amr*/	
 	    echo "<h2>Bookings</h2>";
-
 		}
-
-	
-
 
 	// Setup the menu page
 	function add_admin_pages() 
@@ -183,7 +180,7 @@ function cs_bookings_menu() { /* amr*/
 			echo '<script type="text/javascript" src="' .WPCPLUGINURL . '/includes/js/animation.js" ></script>';
 			echo '<script type="text/javascript" src="' .WPCPLUGINURL . '/includes/js/container.js" ></script>';
 			echo '<script type="text/javascript" src="' .WPCPLUGINURL . '/includes/js/bookingsearch.js" ></script>';
-			echo '<link rel="stylesheet" type="text/css" href="' . WPCPLUGINURL . '/includes/css/container.css" />';
+			//echo '<link rel="stylesheet" type="text/css" href="' . WPCPLUGINURL . '/includes/css/container.css" />';
 			echo '<link rel="stylesheet" type="text/css" href="' . WPCPLUGINURL . '/includes/css/bookingsearch.css" />';
 		}
 		
@@ -207,6 +204,7 @@ function cs_bookings_menu() { /* amr*/
 	
 	function show_options_panel()
 	{
+
 		// Get current database settings
 		$cs = get_option("clearskys_config");
 		if(!isset($cs["clearskys_propertyno"]))
@@ -267,6 +265,12 @@ function cs_bookings_menu() { /* amr*/
 			?>
 			<div class="wrap">
 			<h2>Booking options</h2>
+			<?php 
+			echo '<p>Use shortcode [property-availability-calendar months=6 property=1] to show a property availability calendar</p>';
+			echo '<p><a href="'.admin_url( 'post-new.php?post_type=page&content=[property-availability-calendar months=6 property=1]').'">Create page with shortcode</a></p>'; 
+			
+			echo '<h3>Styling of booked days:</h3><p>Add css like td.booked {background-color: #EEE;}  to highlight the booked cells</p>';
+			?>
 			<form method="post">
 			
 			<?php	
@@ -538,15 +542,18 @@ function cs_bookings_menu() { /* amr*/
   		setlocale(LC_ALL,$cs["clearskys_adminlocale"]);
  		if (!empty ($_REQUEST["property_id"])) 
 			$propertyid = $_REQUEST["property_id"];
-		else $propertyid = 1;	
-			
+		else 
+			$propertyid = 1;	
+		
+		$spropertyid = $propertyid;		
 		if (!isset($_REQUEST['action']) or ( $_REQUEST['action'] == "")) {
 
 			$rows = $booking->getinitiallist();
-			$nomsg = "There are no bookings taking place this month...";
+			$nomsg = "There are no bookings taking place this month... Search to see further.";
 			$backlist = "&amp;baction=";
 			$stype = "initial";
-		} else {
+		} 
+		else {
 			$nomsg = "You do not currently have any bookings with this criteria...";
 			$rows = array();
 			if ($propertyid) {
@@ -571,6 +578,10 @@ function cs_bookings_menu() { /* amr*/
 			}
 		}
   		
+		if (empty($sstatus)) 	$sstatus= '';
+		if (empty($smonth)) 	$smonth= '';;
+		if (empty($stext)) 		$stext = '';
+		if (empty($stype)) 		$stype = '';
 		?> 
 		 
 		<div class="resultsheader">
@@ -584,10 +595,10 @@ function cs_bookings_menu() { /* amr*/
 				} else {
 					echo "/" . $spropertyid . "?feed=RSS";
 				}
-				if($sstatus != "") echo "&sstatus=" . $sstatus;
-				if($smonth != "") echo "&m=" . $smonth;
-				if($stext != "") echo "&s=" . $stext;
-				if($stype != "") echo "&type=" . $stype;
+				echo "&sstatus=" . $sstatus;
+				echo "&m=" . $smonth;
+				echo "&s=" . $stext;
+				echo "&type=" . $stype;
 				
 				echo "' title='Subscribe to RSS feed'>";
 
@@ -695,6 +706,8 @@ function cs_bookings_menu() { /* amr*/
 		global $wpdb;
 		global $amr_props;
 		
+		//$amr_props = amr_get_properties();  //amr wtf
+		
 		$pageheading = "Booking management";
 		$cs = get_option("clearskys_config"); 
   		$tblbooking = $wpdb->prefix . "cs_booking";
@@ -708,7 +721,12 @@ function cs_bookings_menu() { /* amr*/
 		else
 			$propertyid = '';
 			
-  		
+  		if (empty($amr_props)) {
+			
+			create_properties_notice();
+			die();
+			}
+		
 		if($msg != "") {
 			echo '<div id="message" class="updated fade"><p><strong>' . $msg . '</strong></p></div>';
 		}
@@ -1076,7 +1094,7 @@ function cs_bookings_menu() { /* amr*/
 						} 
 					} 
 					else { 
-						if (isset ($amr_props)) {	
+						if (!empty ($amr_props)) {	
 							//$row = $amr_props;
 								?>
 						<p><label for="property_id"><strong>Property reference</strong></label><br />
@@ -1261,14 +1279,7 @@ function cs_bookings_menu() { /* amr*/
 			
 			<input type="hidden" name="action" value="add" />
 	    		<input type="submit" name="addbooking" value="Add Booking &raquo;" />
-	    		<?php
-			if($cs['clearskys_bookingsynch'] == '1' && class_exists('CS')) {
-				?>
-				&nbsp;<input type="checkbox" name="dosynch" id="dosynch" value="1" checked/>
-				&nbsp;synchronise booking on Clearskys.net server
-				<?php
-			}
-			?>
+	    		
 	    </form>
 		<br style="clear:both;" />
 		
@@ -1314,10 +1325,8 @@ function cs_bookings_menu() { /* amr*/
 		global $wpdb;
 		global $amr_props;
 		
-		if(class_exists('CSproperty')) {
-			$csproperty = new CSproperty($wpdb,$wpdb->prefix);
-		}
-
+		$amr_props = amr_get_properties();
+		
 		if(!is_null($row)) {
 		?>
 		<form name="editbooking" id="editbooking" action="" method="post" onsubmit="return checkWholeForm(editbooking);">
@@ -1622,9 +1631,11 @@ function cs_bookings_menu() { /* amr*/
 		 */
 		global $wpdb;
 		
+		if (empty($matches)) $matches = array('months'=>6, 'property'=>1);
 		
 		$tblbooking = $wpdb->prefix . "cs_booking";
   		$booking = new CSbooking($wpdb,$tblbooking);
+		
   		$cs = get_option('clearskys_config');
 		$propertyid = False;
 //amr		$matches = array();
@@ -1639,12 +1650,6 @@ function cs_bookings_menu() { /* amr*/
 //amr				switch($matches[$n]) {
 				foreach ($matches as $n=>$number) {
 				switch($n) {
-					case "love":
-						// process love
-						$thelove = "<span class='love'>powered by <a href='http://www.clearskys.net'>clearskys.net</a></span>";
-						$content = $thelove;
-//amr						$content = str_replace('<' . $matches[0][$n] . '>',$thelove,$content);
-						break;
 					case "months":
 						// get months by removing the brackets
 //amr						$number = preg_replace("[\(|\)]","",$matches[2][$n]);
@@ -1964,10 +1969,10 @@ function cs_bookings_menu() { /* amr*/
   		$booking->setid($property);
   		
 		$feed = "";
-		$sstatus = $booking->xss_clean($_GET["sstatus"]);
-		$smonth = $booking->xss_clean($_GET["m"]); 
-		$stext = $booking->xss_clean($_GET["s"]);
-		$stype = $booking->xss_clean($_GET["type"]);
+		if (!empty($_GET["sstatus"])) $sstatus = $booking->xss_clean($_GET["sstatus"]);
+		if (!empty($_GET["m"])) $smonth = $booking->xss_clean($_GET["m"]); 
+		if (!empty($_GET["s"])) $stext = $booking->xss_clean($_GET["s"]);
+		if (!empty($_GET["type"])) $stype = $booking->xss_clean($_GET["type"]);
 		
 		if($stype == "") {
 			$row = $booking->getfeedlist($stext, $sstatus, $smonth, $property, True);
@@ -2246,6 +2251,6 @@ function cs_bookings_menu() { /* amr*/
 	
 }	
 
-	$CSbook =& new CSbook();
+	$CSbook =new CSbook();
 	
 ?>

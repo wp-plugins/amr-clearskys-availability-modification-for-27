@@ -9,7 +9,7 @@
 	
 }
 #editbooking table, #addbooking table {
-	background-color: #feffc8;
+	/*background-color: #feffc8; */
 	
 }
 #editbooking table th, #addbooking table th {
@@ -30,7 +30,9 @@
 
 #bookingsidepanel table { border: 1px solid #CCCCCC !important; }
 #bookingsidepanel table thead th { line-height: 1.5; background: url( ../images/fade-butt.png ) -5px 0px; border-top: none !important; border-left: none !important; border-right: none !important; border-bottom: 1px solid #FFFFFF !important; padding: 3px; font-weight: bold;}
-#bookingsidepanel table tbody td { background: #F3F3F3; border-top: 1px solid #FFFFFF !important; border-left: none !important; border-right: none !important; border-bottom: none !important; padding: 3px;}
+#bookingsidepanel table tbody td { 
+	background: #F3F3F3; 
+	border-top: 1px solid #FFFFFF !important; border-left: none !important; border-right: none !important; border-bottom: none !important; padding: 3px;}
 searchpanel {  }
 .searchheading {float: left; margin-left: 5px; vertical-align: middle; font-weight: bold;}
 .searchcontent {float: left; margin-left: 5px; vertical-align: middle; font-weight: normal; }
@@ -55,7 +57,7 @@ searchpanel {  }
 	border: 1px solid #999;
 }
 .alternate {
-	background-color: #fdff90;
+	/*background-color: #fdff90; */
 }
 .bookingrow .title {
 	font-weight: bold;
