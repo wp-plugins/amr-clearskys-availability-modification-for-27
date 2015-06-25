@@ -4,7 +4,7 @@ Tags: calendar, property, properties, availability, widget
 Requires at least: 2.6
 Tested up to: 3.4.1
 Version: 1.2
-Stable tag: 1.2
+Stable tag: trunk
 
 Offers simple bookings management for simple properties. Has an availability calendar per property and a feed.
 
