@@ -10,7 +10,7 @@ Offers simple bookings management for simple properties. Has an availability cal
 
 == Description ==
 Simple property booking an availability plugin.  Works out the box for one property. Add your own little file from the sample for more properties.
-Add guest details, booking and payment status.
+Add guest details, booking and payment status.   NOTE there is a version 1.3 available but wp is not showing it as latest for unknown reason. https://downloads.wordpress.org/plugin/amr-clearskys-availability-modification-for-27.1.3.zip
 
 This is a mod of the original Clearskys Property Availability calendar which appears to no longer exist.
 This version was initially modified for 2.7.1 with wordpress in own directory, shortcodes, multiple properties (rudimentary).
