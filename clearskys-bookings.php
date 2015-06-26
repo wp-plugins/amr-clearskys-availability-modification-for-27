@@ -3,7 +3,7 @@
 Plugin Name: amr property availability (orig clearksys)
 Plugin URI: http://blog.clearskys.net/plugins/availability-plugin/
 Description: A version of the clearksy availability calendar and administration booking management engine - modifoed for 2.7 compatibility
-Version: 1.2
+Version: 1.3
 Author: clearskys, anmari
 Author URI: http://blog.clearskys.net, http://anmari.com
 */
